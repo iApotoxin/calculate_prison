@@ -8,6 +8,16 @@ const Option = Select.Option;
 function hasErrors(fieldsError) {
     return Object.keys(fieldsError).some(field => fieldsError[field]);
 }
+function PostData(data) {
+    fetch('http://192.168.2.33/', {
+        method: 'POST',
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+        },
+        body: data
+    })
+}
 
 
 class EditableTable extends React.Component {
@@ -29,12 +39,13 @@ class EditableTable extends React.Component {
         e.preventDefault();
         this.props.form.validateFields((err, values) => {
             if (err) {
-               return;
+                return;
             }
             const allvalues = {
                 ...values,
-                'date':values.date.format('YYYY-MM-DD')
+                'date': values.date.format('YYYY-MM-DD')
             }
+            PostData(allvalues);
             console.log(allvalues);
         });
     }
