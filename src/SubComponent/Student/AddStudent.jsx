@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import 'antd/dist/antd.css';
 import { Form, Icon, Input, Button } from 'antd';
-import axios from 'axios';
 const FormItem = Form.Item;
 
 function hasErrors(fieldsError) {
@@ -9,18 +8,17 @@ function hasErrors(fieldsError) {
 }
 
 function PostData(data) {
-  // axios.post('https://cal-prison-api.herokuapp.com/post_asset.php', data);
   fetch('https://cal-prison-api.herokuapp.com/post_asset.php', {
-      method: 'POST',
-      // headers: {
-      //     'Accept': 'application/json',
-      //     'Content-Type': 'application/json',
-      // },
-      body: data
-  }).then(response=>{
-    response.json();
-    console.log(response);
-  })
+    method: 'POST',
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(data)
+  }).then((response) => response.json())
+    .then((response) => {
+      console.log("post detail response: ",response);
+    });
 }
 
 class AddStudentComponent extends Component {
@@ -42,7 +40,7 @@ class AddStudentComponent extends Component {
     e.preventDefault();
     this.props.form.validateFields((err, values) => {
       if (!err) {
-        console.log('Received values of form: ', values);
+        // console.log('Received values of form: ', values);
         PostData(values);
       }
     });

@@ -9,16 +9,31 @@ function hasErrors(fieldsError) {
     return Object.keys(fieldsError).some(field => fieldsError[field]);
 }
 function PostData(data) {
-    fetch('http://192.168.2.33/', {
-        method: 'POST',
-        headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json',
-        },
-        body: data
-    })
-}
+    fetch('https://cal-prison-api.herokuapp.com/post_asset_main.php', {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(data)
+    }).then((response) => response.json())
+      .then((response) => {
+        console.log("post detail response: ",response);
+      });
+  }
 
+function getType() {
+    fetch('https://cal-prison-api.herokuapp.com/get_type.php', {
+      method: 'GET',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+      },
+    }).then((response) => response.json())
+      .then((response) => {
+        console.log("get detail response: ",response);
+      });
+  }
 
 class EditableTable extends React.Component {
     constructor(props) {
@@ -32,6 +47,7 @@ class EditableTable extends React.Component {
     }
     componentDidMount() {
         // To disabled submit button at the beginning.
+        getType();
         this.props.form.validateFields();
     }
 
@@ -46,7 +62,7 @@ class EditableTable extends React.Component {
                 'date': values.date.format('YYYY-MM-DD')
             }
             PostData(allvalues);
-            console.log(allvalues);
+            // console.log(allvalues);
         });
     }
     handleInputChange = (prop) => (event) => {
