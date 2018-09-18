@@ -1,25 +1,16 @@
 import React, { Component } from 'react';
 import 'antd/dist/antd.css';
-import { Form, Icon, Input, Button } from 'antd';
+import { Form, Icon, Input, Button,message,Alert } from 'antd';
 const FormItem = Form.Item;
 
 function hasErrors(fieldsError) {
   return Object.keys(fieldsError).some(field => fieldsError[field]);
 }
+const senderror = () => {
+  message.error("can't submit data");
+};
 
-function PostData(data) {
-  fetch('https://cal-prison-api.herokuapp.com/post_asset.php', {
-    method: 'POST',
-    headers: {
-      'Accept': 'application/json',
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(data)
-  }).then((response) => response.json())
-    .then((response) => {
-      console.log("post detail response: ",response);
-    });
-}
+
 
 class AddStudentComponent extends Component {
   constructor(props) {
@@ -29,7 +20,29 @@ class AddStudentComponent extends Component {
       depreciate_b: '',
       depreciate_col: 0,
       sum: 0,
+      error:false,
     };
+  }
+  PostData(data) {
+    fetch('https://cal-prison-api.herokuapp.com/post_asset.php', {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(data)
+    }).then((response) => response.json())
+      .then((response) => {
+        console.log("post detail response: ",response);
+        if(response.error===false){
+          //set feild = ' '
+        }
+        else{
+          this.setState({error:true});
+        }
+      }).catch(error=>{
+        this.setState({error:true});
+      });
   }
   componentDidMount() {
     // To disabled submit button at the beginning.
@@ -41,17 +54,20 @@ class AddStudentComponent extends Component {
     this.props.form.validateFields((err, values) => {
       if (!err) {
         // console.log('Received values of form: ', values);
-        PostData(values);
+        this.PostData(values);
       }
     });
   }
   handleInputChange = (prop) => (event) => {
     this.setState({ [prop]: event.target.value });
   }
+  errorhandleClose=()=>{
+    this.setState({error:false});
+  }
 
   render() {
     let summation = (parseFloat(this.state.depreciate_col) + parseFloat(this.state.sum)).toFixed(2);
-    const { getFieldDecorator, getFieldsError, getFieldError, isFieldTouched } = this.props.form;
+    const { getFieldDecorator, setFieldsValue,getFieldsError, getFieldError, isFieldTouched } = this.props.form;
 
     // Only show error after a field is touched.
     const IdError = isFieldTouched('id') && getFieldError('id');
@@ -60,10 +76,20 @@ class AddStudentComponent extends Component {
     const SumError = isFieldTouched('sum') && getFieldError('sum');
 
     return (
-
-      <Form layout="vertical" style={{ textAlign: 'center' }} onSubmit={this.handleSubmit}>
+      <div>
         <h1 style={{ color: '#d9d9d9' }}>Add Sub Information</h1>
         <br></br>
+        {this.state.error? <Alert 
+        message="Error" 
+        type="error" 
+        description="can't submit data." 
+        showIcon 
+        closable
+        afterClose={this.errorhandleClose}
+        /> :null}
+
+      <Form layout="vertical" style={{ textAlign: 'center' }} onSubmit={this.handleSubmit}>
+        
         <FormItem
           style={{ width: 300, margin: '0 auto', marginBottom: 20, marginTop: 20 }}
           validateStatus={IdError ? 'error' : ''}
@@ -140,12 +166,14 @@ class AddStudentComponent extends Component {
             style={{ width: '120px' }}
             type="primary"
             htmlType="submit"
+            // onClick={senderror}
             disabled={hasErrors(getFieldsError())}
           >
             Submit
           </Button>
         </FormItem>
       </Form>
+      </div>
     );
   }
 }
