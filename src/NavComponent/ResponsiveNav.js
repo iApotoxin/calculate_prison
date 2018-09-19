@@ -1,11 +1,10 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import throttle from 'lodash.throttle';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 // use babel-import-plugin as specified in Ant Design Docs!
 // https://ant.design/docs/react/getting-started#Import-on-Demand
-import { Menu, Icon, Button,Collapse,Popover } from 'antd';
+import { Icon,Collapse } from 'antd';
 import 'antd/lib/popover/style/css';
 import 'antd/lib/icon/style/css';
 
@@ -58,7 +57,7 @@ class ResponsiveNav extends Component {
       // </Menu>
       <Collapse onChange={callback}>
         <Panel showArrow={false} header={ <div style={{verticalAlign:'center'}}><Icon type="bars" style={{ color: '#fff',fontSize:'18px'}} />
-          <p style={{color:'white',display:'inline'}}>  Logo</p></div> } style={{backgroundColor:'#001529'}} >
+          <p style={{color:'white',display:'inline'}}> </p></div> } style={{backgroundColor:'#001529'}} >
         <MenuMarkup
           onLinkClick={() => this.handleMenuVisibility(false)}
           activeLinkKey={this.props.activeLinkKey}

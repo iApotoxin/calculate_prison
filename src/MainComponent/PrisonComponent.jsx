@@ -1,22 +1,20 @@
 import React, { Component } from 'react';
-import { DatePicker, Layout, Menu, Breadcrumb, Icon, Slider } from 'antd';
+import { Layout, Menu, Icon } from 'antd';
 import throttle from 'lodash.throttle';
 import 'antd/dist/antd.css';
-import AddStudentComponent from '../SubComponent/Student/AddStudent.jsx'
-import ChangeStudentComponent from '../SubComponent/Student/ChangeStudent.jsx'
+import Sub from '../SubComponent/Prison/Sub'
+import Main from '../SubComponent/Prison/Main'
 import {
     BrowserRouter,
-    HashRouter,
     Route,
     Link,
-    NavLink
 } from 'react-router-dom';
 
-const { SubMenu } = Menu;
-const { Header, Content, Footer, Sider } = Layout;
+
+const { Content, Sider } = Layout;
 
 
-class StudentComponent extends Component {
+class PrisonComponent extends Component {
     state={
         viewportWidth:0,
     }
@@ -41,9 +39,9 @@ class StudentComponent extends Component {
                 <BrowserRouter>
                     <Layout style={{ padding: '22px 20px 70px', background: '#fff' ,height:'100vh'}}>
                         <Sider>
-                        <StudentMenu></StudentMenu>
+                        <PrisonMenu></PrisonMenu>
                         </Sider>
-                        <StudentContent></StudentContent>
+                        <PrisonContent></PrisonContent>
                     </Layout>    
             </BrowserRouter>
             );
@@ -54,9 +52,9 @@ class StudentComponent extends Component {
                 <Content style={{ padding: '0 20px'}}>
                     <Layout style={{ padding: '22px 0 70px', background: '#fff' }}>
                         <div style={{ marginBottom:'20px' }}>
-                        <StudentMenu></StudentMenu>
+                        <PrisonMenu></PrisonMenu>
                         </div>
-                        <StudentContent></StudentContent>
+                        <PrisonContent></PrisonContent>
                     </Layout>
                 </Content>
             </BrowserRouter>
@@ -64,43 +62,45 @@ class StudentComponent extends Component {
     }
 }
 
-const StudentContent=()=>{
+const PrisonContent=()=>{
     return(
         <Content style={{ padding: '0 24px', minHeight: 280}}>
-        <Route exact path="/Student" component={AddStudentComponent} />
-        <Route path="/Student/addStudent" component={AddStudentComponent} />
-        <Route path="/Student/changeStudent" component={ChangeStudentComponent} />
+        <Route exact path="/" component={Main} />
+        <Route path="/main" component={Main} />
+        <Route path="/sub" component={Sub} />
+   
     </Content>
     )
 }
 
-const StudentMenu=(props)=> {
+const PrisonMenu=(props)=> {
         return(
             <Menu
-            theme= "dark"
+            theme= "light"
             mode="inline"
-            defaultSelectedKeys={['studentAdd']}
-            defaultOpenKeys={['studentAdd']}
+            defaultSelectedKeys={['Main']}
+            defaultOpenKeys={['Main']}
             style={{ height: '100%'}}
         >
-            <Menu.Item key="studentAdd">
-                <Link to="/Student/addStudent">
-                    <Icon type="user-add" style={{fontSize: 20 }} />
-                    Add Student
+        <Menu.Item key="Main">
+                <Link to="/main">
+                    <Icon type="user-add"  style={{fontSize: 20 }} />
+                    ข้อมูลหลัก
             </Link>
             </Menu.Item>
-            <Menu.Item key="studentChange">
-                <Link to="/Student/changeStudent">
-                    <Icon type="edit"  style={{fontSize: 20 }} />
-                    Edit/Delete Student
+            <Menu.Item key="Sub">
+                <Link to="/sub">
+                    <Icon type="edit" style={{fontSize: 20 }} />
+                    ข้อมูลย่อย
             </Link>
             </Menu.Item>
+            
         </Menu>
         )
 }
-StudentComponent.defaultProps = {
+PrisonComponent.defaultProps = {
     mobileBreakPoint: 575,
     applyViewportChange: 250,
   };
 
-export default StudentComponent
+export default PrisonComponent
