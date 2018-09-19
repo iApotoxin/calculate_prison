@@ -114,20 +114,6 @@ class SubContent extends Component {
             <br></br>
 
             <FormItem
-              validateStatus={DateError ? 'error' : ''}
-              help={DateError || ''}
-            >
-              {getFieldDecorator('date', {
-                rules: [{
-                  type: 'object',
-                  required: true,
-                  message: 'กรุณาเลือกวันเดือนปี!'
-                }]
-              })(
-                <DatePicker  style={{ width: 300, margin: '0 auto' }} placeholder="วันเดือนปี" />
-              )}
-            </FormItem>
-            <FormItem
               style={{ width: 300, margin: '0 auto', marginBottom: 20 }}
               validateStatus={IdError ? 'error' : ''}
               help={IdError || ''}
@@ -139,7 +125,21 @@ class SubContent extends Component {
                   pattern: ''
                 }],
               })(
-                <Input placeholder="เลขที่ครุภัณฑ์" onChange={this.handleInputChange('id')} />
+                <Input placeholder="เลขที่ครุภัณฑ์"  onChange={this.handleInputChange('id')} /> 
+              )}
+            </FormItem>
+            <FormItem
+              validateStatus={DateError ? 'error' : ''}
+              help={DateError || ''}
+            >
+              {getFieldDecorator('date', {
+                rules: [{
+                  type: 'object',
+                  required: true,
+                  message: 'กรุณาเลือกวันเดือนปี!'
+                }]
+              })(
+                <DatePicker  style={{ width: 300, margin: '0 auto' }} placeholder="วันเดือนปี" />
               )}
             </FormItem>
 

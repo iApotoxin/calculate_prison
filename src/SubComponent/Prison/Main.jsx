@@ -184,7 +184,7 @@ class MainContent extends Component {
                                     pattern: ''
                                 }],
                             })(
-                                <Input style={{ width: '25em' }} placeholder="เลขที่ครุภัณฑ์" onChange={this.handleInputChange('id')} />
+                                <Input style={{ width: '300px' }} placeholder="เลขที่ครุภัณฑ์" onChange={this.handleInputChange('id')} />
                             )}
                         </FormItem>
 
@@ -200,7 +200,7 @@ class MainContent extends Component {
                                 }],
                             })(
                                 <Select
-                                    style={{ width: '25em' }}
+                                    style={{ width: '300px' }}
                                     placeholder="ประเภท"
                                 >
                                     {/* {type_of_item.map((item)=>{
@@ -225,6 +225,7 @@ class MainContent extends Component {
                                 </Select>
                             )}
                         </FormItem>
+                        <br></br>
                         <FormItem
                             validateStatus={LocationError ? 'error' : ''}
                             help={LocationError || ''}
@@ -237,7 +238,7 @@ class MainContent extends Component {
                                 }],
                             })(
                                 <Input
-                                    style={{ width: '25em' }}
+                                    style={{ width: '300px' }}
                                     placeholder="สถานที่ตั้ง"
                                     onChange={this.handleInputChange('location')} />
                             )}
@@ -253,7 +254,7 @@ class MainContent extends Component {
                                     message: 'กรุณาเลือกวันเดือนปี!'
                                 }]
                             })(
-                                <DatePicker style={{ width: '25em' }} placeholder="วันเดือนปี" />
+                                <DatePicker style={{ width: '300px' }} placeholder="วันเดือนปี" />
                             )}
                         </FormItem>
                         {/* <hr></hr> */}
@@ -271,7 +272,7 @@ class MainContent extends Component {
                                 }],
                             })(
                                 <Input
-                                    style={{ width: '25em' }}
+                                    style={{ width: '300px' }}
                                     onChange={this.handleInputChange('item')}
                                     placeholder="รายการ" />
                             )}
@@ -288,11 +289,12 @@ class MainContent extends Component {
                                 }],
                             })(
                                 <Input
-                                    style={{ width: '25em' }}
+                                    style={{ width: '300px' }}
                                     onChange={this.handleInputChange('amount')}
                                     placeholder="จำนวนหน่วย" />
                             )}
                         </FormItem>
+                        <br></br>
                         <FormItem
                             validateStatus={PriceAmountError ? 'error' : ''}
                             help={PriceAmountError || ''}
@@ -305,7 +307,7 @@ class MainContent extends Component {
                                 }],
                             })(
                                 <Input
-                                    style={{ width: '25em' }}
+                                    style={{ width: '300px' }}
                                     onChange={this.handleInputChange('price_amount')}
                                     placeholder="ราคาต่อหน่วย" />
                             )}
@@ -322,11 +324,12 @@ class MainContent extends Component {
                                 }],
                             })(
                                 <Input
-                                    style={{ width: '25em' }}
+                                    style={{ width: '300px' }}
                                     onChange={this.handleInputChange('price')}
                                     placeholder="มูลค่ารวม" />
                             )}
                         </FormItem>
+                        <br></br>
                         <FormItem
                             validateStatus={LifeTimeError ? 'error' : ''}
                             help={LifeTimeError || ''}
@@ -339,7 +342,7 @@ class MainContent extends Component {
                                 }],
                             })(
                                 <Input
-                                    style={{ width: '25em' }}
+                                    style={{ width: '300px' }}
                                     onChange={this.handleInputChange('lifetime')}
                                     placeholder="อายุใช้งาน" />
                             )}
@@ -356,11 +359,12 @@ class MainContent extends Component {
                                 }],
                             })(
                                 <Input
-                                    style={{ width: '25em' }}
+                                    style={{ width: '300px' }}
                                     onChange={this.handleInputChange('depreciate_pct')}
                                     placeholder="อัตราค่าเสื่อมราคา" />
                             )}
                         </FormItem>
+                        <br></br>
                         <FormItem
                             validateStatus={DeBError ? 'error' : ''}
                             help={DeBError || ''}
@@ -373,7 +377,7 @@ class MainContent extends Component {
                                 }],
                             })(
                                 <Input
-                                    style={{ width: '25em' }}
+                                    style={{ width: '300px' }}
                                     onChange={this.handleInputChange('depreciate_b')}
                                     placeholder="ค่าเสื่อมราคาประจำปี" />
                             )}
@@ -390,11 +394,12 @@ class MainContent extends Component {
                                 }],
                             })(
                                 <Input
-                                    style={{ width: '25em' }}
+                                    style={{ width: '300px' }}
                                     onChange={this.handleInputChange('depreciate_col')}
                                     placeholder="ค่าเสื่อมราคาสะสม" />
                             )}
                         </FormItem>
+                        <br></br>
                         <FormItem
                             validateStatus={SumError ? 'error' : ''}
                             help={SumError || ''}
@@ -407,7 +412,7 @@ class MainContent extends Component {
                                 }],
                             })(
                                 <Input
-                                    style={{ width: '25em' }}
+                                    style={{ width: '300px' }}
                                     onChange={this.handleInputChange('sum')}
                                     placeholder="มูลค่าสุทธิ" />
                             )}
@@ -424,7 +429,7 @@ class MainContent extends Component {
                                 }],
                             })(
                                 <Input
-                                    style={{ width: '25em' }}
+                                    style={{ width: '300px' }}
                                     onChange={this.handleInputChange('etc')}
                                     placeholder="หมายเหตุ" />
                             )}
