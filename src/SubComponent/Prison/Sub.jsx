@@ -22,7 +22,22 @@ const errorNoti = () => {
     duration: 8,
   });
 };
-
+const errorNoti_get_sum = () => {
+  notification.open({
+    message: 'ล้มเหลว',
+    description: 'โปรดตรวจสอบให้แน่ใจว่าคุณได้เชื่อมต่ออินเตอร์เน็ตอยู่ หรือตรวจสอบเลขที่ครุภัณฑ์ว่าได้กรอกไปในฟอร์มข้อมูลหลักแล้ว!',
+    icon: <Icon type="close-circle" style={{ color: '#ff0000' }} />,
+    duration: 10,
+  });
+};
+const errorNoti_not_match = () => {
+  notification.open({
+    message: 'ล้มเหลว',
+    description: 'ผลรวมมูลค่าครุภัณฑ์ไม่ถูกต้อง!',
+    icon: <Icon type="close-circle" style={{ color: '#ff0000' }} />,
+    duration: 10,
+  });
+};
 
 
 class SubContent extends Component {
@@ -35,8 +50,11 @@ class SubContent extends Component {
       depreciate_col: 0,
       sum: 0,  
       loading: false,
+      summation:0,
+      get_sum:false,
     };
   }
+
   PostData(data) {
     this.setState({ loading: true }); //enable loading
     fetch('https://cal-prison-api.herokuapp.com/post_asset.php', {
@@ -66,6 +84,50 @@ class SubContent extends Component {
       });
     this.setState({ sum: 0, depreciate_col: 0, id: '', depreciate_b: 0, date:'', }) //reset state to default
   }
+  async checkId_getSum(data){
+    this.setState({ loading: true }); //enable loading
+    fetch(`https://cal-prison-api.herokuapp.com/get_sum.php?id="${data.id}"`, {
+      method: 'GET',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+      },
+    }
+    ).then((response) => response.json())
+    .then(response=>{
+      // console.log("get detail response: ", response);
+      if (response.error === false) {
+        //set data to state
+        this.setState({get_sum:true});
+        this.setState({summation:response.sum[0].sum});
+        //check summation
+        if(parseFloat(this.state.sum)+parseFloat(this.state.depreciate_col)===parseFloat(this.state.summation)){
+          //match 2 price plus
+          this.PostData(data);
+        }
+        else{
+          //notify not match 2 price plus
+          errorNoti_not_match();
+          this.setState({ loading: false }) //disable loading
+          
+        }
+
+      }
+      else {
+        //notify faail
+        errorNoti_get_sum();
+        this.setState({get_sum:false});
+        this.setState({ loading: false }) //disable loading
+        
+      }
+
+    }).catch(error=>{
+      //notify fail
+      errorNoti_get_sum();
+      this.setState({get_sum:false});
+    });
+  }
+
   componentDidMount() {
     // To disabled submit button at the beginning.
     this.props.form.validateFields();
@@ -85,8 +147,7 @@ class SubContent extends Component {
           ...values,
           'date': values.date.format('YYYY-MM-DD')
       }
-      this.PostData(allvalues);
-      console.log(allvalues);
+      this.checkId_getSum(allvalues); //check summation and id then post data
       }
     });
   }
@@ -193,7 +254,7 @@ class SubContent extends Component {
             </FormItem>
 
             <FormItem style={{ textAlign: 'center' }}>
-              <h1>summation = {summation}</h1>
+              <h1 style={{ color: '#d9d9d9' }}>ผลรวมมูลค่าครุภัณฑ์ = {summation}</h1>
             </FormItem>
 
 
