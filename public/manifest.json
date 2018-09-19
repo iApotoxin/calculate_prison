@@ -1,9 +1,9 @@
 {
-  "short_name": "Stu-W",
-  "name": "Student Website By Apo",
+  "short_name": "Prison Calculate",
+  "name": "Prison Calculate Website By Apotoxin",
   "icons": [
     {
-      "src": "favicon.ico",
+      "src": "prison-calculate.ico",
       "sizes": "64x64 32x32 24x24 16x16",
       "type": "image/x-icon"
     }
