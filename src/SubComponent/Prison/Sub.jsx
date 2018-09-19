@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import 'antd/dist/antd.css';
-import { Form, Icon, Input, Button, notification, Spin } from 'antd';
+import { Form, Icon, Input, Button, notification, Spin,DatePicker } from 'antd';
 const FormItem = Form.Item;
 
 function hasErrors(fieldsError) {
@@ -11,7 +11,7 @@ const successNoti = () => {
     message: 'บันทึกสำเร็จ',
     description: 'บันทึกข้อมูลลงในฐานข้อมูลสำเร็จแล้ว...',
     icon: <Icon type="check-circle" style={{ color: '#39e600' }} />,
-    duration:4.5,
+    duration: 4.5,
   });
 };
 const errorNoti = () => {
@@ -19,7 +19,7 @@ const errorNoti = () => {
     message: 'บันทึกไม่สำเร็จ',
     description: 'ไม่สามารถบันทึกข้อมูลลงในฐานข้อมูลได้ โปรดตรวจสอบให้แน่ใจว่าคุณได้เชื่อมต่ออินเตอร์เน็ตอยู่!',
     icon: <Icon type="close-circle" style={{ color: '#ff0000' }} />,
-    duration:8,
+    duration: 8,
   });
 };
 
@@ -29,10 +29,11 @@ class SubContent extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      date:'',
       id: '',
       depreciate_b: 0,
       depreciate_col: 0,
-      sum: 0,
+      sum: 0,  
       loading: false,
     };
   }
@@ -63,7 +64,7 @@ class SubContent extends Component {
         errorNoti();
         this.setState({ loading: false })//disable loading
       });
-      this.setState({sum:0,depreciate_col:0,id:'',depreciate_b:0,}) //reset state to default
+    this.setState({ sum: 0, depreciate_col: 0, id: '', depreciate_b: 0, date:'', }) //reset state to default
   }
   componentDidMount() {
     // To disabled submit button at the beginning.
@@ -77,15 +78,22 @@ class SubContent extends Component {
     e.preventDefault();
     this.props.form.validateFields((err, values) => {
       if (!err) {
-        // console.log('Received values of form: ', values);
-        this.PostData(values);
+        if (err) {
+          return;
+      }
+      const allvalues = {
+          ...values,
+          'date': values.date.format('YYYY-MM-DD')
+      }
+      this.PostData(allvalues);
+      console.log(allvalues);
       }
     });
   }
   handleInputChange = (prop) => (event) => {
     this.setState({ [prop]: event.target.value });
   }
-  
+
   render() {
     let summation = (parseFloat(this.state.depreciate_col) + parseFloat(this.state.sum)).toFixed(2);
     const { getFieldDecorator, getFieldsError, getFieldError, isFieldTouched } = this.props.form;
@@ -95,6 +103,7 @@ class SubContent extends Component {
     const BError = isFieldTouched('depreciate_b') && getFieldError('depreciate_b');
     const ColError = isFieldTouched('depreciate_col') && getFieldError('depreciate_col');
     const SumError = isFieldTouched('sum') && getFieldError('sum');
+    const DateError = isFieldTouched('date') && getFieldError('date');
 
     return (
       <Spin size="large" tip="กำลังบันทึก..." spinning={this.state.loading} delay={500}>
@@ -105,7 +114,21 @@ class SubContent extends Component {
             <br></br>
 
             <FormItem
-              style={{ width: 300, margin: '0 auto', marginBottom: 20, marginTop: 20 }}
+              validateStatus={DateError ? 'error' : ''}
+              help={DateError || ''}
+            >
+              {getFieldDecorator('date', {
+                rules: [{
+                  type: 'object',
+                  required: true,
+                  message: 'กรุณาเลือกวันเดือนปี!'
+                }]
+              })(
+                <DatePicker  style={{ width: 300, margin: '0 auto' }} placeholder="วันเดือนปี" />
+              )}
+            </FormItem>
+            <FormItem
+              style={{ width: 300, margin: '0 auto', marginBottom: 20 }}
               validateStatus={IdError ? 'error' : ''}
               help={IdError || ''}
             >
