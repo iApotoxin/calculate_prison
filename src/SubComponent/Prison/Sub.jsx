@@ -125,6 +125,7 @@ class SubContent extends Component {
       //notify fail
       errorNoti_get_sum();
       this.setState({get_sum:false});
+      this.setState({ loading: false }) //disable loading
     });
   }
 
