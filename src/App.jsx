@@ -3,6 +3,7 @@ import './App.css';
 import { Layout} from 'antd';
 import 'antd/dist/antd.css';
 import PrisonComponent from './MainComponent/PrisonComponent'
+import LogginPage from './MainComponent/LoginComponent'
 import Header from './Header'
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { faStroopwafel } from '@fortawesome/free-solid-svg-icons'
@@ -18,7 +19,7 @@ class App extends Component {
   render() {
     return (
 
-
+      // <LogginPage/>
       <BrowserRouter>
         <Layout>
           <Content style={{}}>

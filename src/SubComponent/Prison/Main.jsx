@@ -15,10 +15,17 @@ const successNoti = () => {
         duration: 4.5,
     });
 };
-const errorNoti = () => {
+const errorNoti = (type) => {
+    let desc = '';
+    if (type === 'no_connect') {
+      desc = 'ไม่สามารถบันทึกข้อมูลลงในฐานข้อมูลได้ โปรดตรวจสอบให้แน่ใจว่าคุณได้เชื่อมต่ออินเตอร์เน็ตอยู่!';
+    }
+    else if (type === 'get_err_true') {
+      desc = 'ไม่สามารถบันทึกข้อมูลลงในฐานข้อมูลได้ โปรดตรวจสอบว่ากรอกเลขที่ครุภัณฑ์ ซ้ำหรือไม่!';
+    }
     notification.open({
         message: 'บันทึกไม่สำเร็จ',
-        description: 'ไม่สามารถบันทึกข้อมูลลงในฐานข้อมูลได้ โปรดตรวจสอบให้แน่ใจว่าคุณได้เชื่อมต่ออินเตอร์เน็ตอยู่ หรือกรอกเลขที่ครุภัณฑ์ ซ้ำหรือไม่!',
+        description: desc,
         icon: <Icon type="close-circle" style={{ color: '#ff0000' }} />,
         duration: 8,
     });
@@ -66,11 +73,11 @@ class MainContent extends Component {
                     this.setState({ loading: false });//disable loading
                 }
                 else {
-                    errorNoti();
+                    errorNoti('get_err_true');
                     this.setState({ loading: false });//disable loading
                 }
             }).catch(error => {
-                errorNoti();
+                errorNoti('no_connect');
                 this.setState({ loading: false });//disable loading
             });
         this.setState({ sum: 0, depreciate_col: 0, id: '', depreciate_b: 0, }) //reset state to default

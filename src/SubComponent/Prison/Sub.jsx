@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import 'antd/dist/antd.css';
-import { Form, Icon, Input, Button, notification, Spin,DatePicker } from 'antd';
+import { Form, Icon, Input, Button, notification, Spin, DatePicker } from 'antd';
 const FormItem = Form.Item;
 
 function hasErrors(fieldsError) {
@@ -14,18 +14,33 @@ const successNoti = () => {
     duration: 4.5,
   });
 };
-const errorNoti = () => {
+const errorNoti = (type) => {
+  let desc = '';
+  if (type === 'no_connect') {
+    desc = 'ไม่สามารถบันทึกข้อมูลลงในฐานข้อมูลได้ โปรดตรวจสอบให้แน่ใจว่าคุณได้เชื่อมต่ออินเตอร์เน็ตอยู่!';
+  }
+  else if (type === 'get_err_true') {
+    desc = 'ไม่สามารถบันทึกข้อมูลลงในฐานข้อมูลได้ เกิดปัญหาบางอย่างกับฐานข้อมูล!';
+  }
+
   notification.open({
     message: 'บันทึกไม่สำเร็จ',
-    description: 'ไม่สามารถบันทึกข้อมูลลงในฐานข้อมูลได้ โปรดตรวจสอบให้แน่ใจว่าคุณได้เชื่อมต่ออินเตอร์เน็ตอยู่!',
+    description: desc,
     icon: <Icon type="close-circle" style={{ color: '#ff0000' }} />,
     duration: 8,
   });
 };
-const errorNoti_get_sum = () => {
+const errorNoti_get_sum = (type) => {
+  let desc = '';
+  if (type === 'no_connect') {
+    desc = 'ไม่สามารถบันทึกข้อมูลลงในฐานข้อมูลได้ โปรดตรวจสอบให้แน่ใจว่าคุณได้เชื่อมต่ออินเตอร์เน็ตอยู่!';
+  }
+  else if (type === 'get_err_true') {
+    desc = 'ไม่สามารถบันทึกข้อมูลลงในฐานข้อมูลได้ โปรดตรวจสอบเลขที่ครุภัณฑ์ว่าได้กรอกไปในฟอร์มข้อมูลหลักแล้ว!';
+  }
   notification.open({
     message: 'ล้มเหลว',
-    description: 'โปรดตรวจสอบให้แน่ใจว่าคุณได้เชื่อมต่ออินเตอร์เน็ตอยู่ หรือตรวจสอบเลขที่ครุภัณฑ์ว่าได้กรอกไปในฟอร์มข้อมูลหลักแล้ว!',
+    description: desc,
     icon: <Icon type="close-circle" style={{ color: '#ff0000' }} />,
     duration: 10,
   });
@@ -44,14 +59,14 @@ class SubContent extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      date:'',
+      date: '',
       id: '',
       depreciate_b: 0,
       depreciate_col: 0,
-      sum: 0,  
+      sum: 0,
       loading: false,
-      summation:0,
-      get_sum:false,
+      summation: 0,
+      get_sum: false,
     };
   }
 
@@ -75,16 +90,16 @@ class SubContent extends Component {
           this.setState({ loading: false }) //disable loading
         }
         else {
-          errorNoti();
+          errorNoti('get_err_true');
           this.setState({ loading: false })//disable loading
         }
       }).catch(error => {
-        errorNoti();
+        errorNoti('no_connect');
         this.setState({ loading: false })//disable loading
       });
-    this.setState({ sum: 0, depreciate_col: 0, id: '', depreciate_b: 0, date:'', }) //reset state to default
+    this.setState({ sum: 0, depreciate_col: 0, id: '', depreciate_b: 0, date: '', }) //reset state to default
   }
-  async checkId_getSum(data){
+  checkId_getSum(data) {
     this.setState({ loading: true }); //enable loading
     fetch(`https://cal-prison-api.herokuapp.com/get_sum.php?id="${data.id}"`, {
       method: 'GET',
@@ -94,39 +109,39 @@ class SubContent extends Component {
       },
     }
     ).then((response) => response.json())
-    .then(response=>{
-      // console.log("get detail response: ", response);
-      if (response.error === false) {
-        //set data to state
-        this.setState({get_sum:true});
-        this.setState({summation:response.sum[0].sum});
-        //check summation
-        if(parseFloat(this.state.sum)+parseFloat(this.state.depreciate_col)===parseFloat(this.state.summation)){
-          //match 2 price plus
-          this.PostData(data);
+      .then(response => {
+        // console.log("get detail response: ", response);
+        if (response.error === false) {
+          //set data to state
+          this.setState({ get_sum: true });
+          this.setState({ summation: response.sum[0].sum });
+          //check summation
+          if (parseFloat(this.state.sum) + parseFloat(this.state.depreciate_col) === parseFloat(this.state.summation)) {
+            //match 2 price plus
+            this.PostData(data);
+          }
+          else {
+            //notify not match 2 price plus
+            errorNoti_not_match();
+            this.setState({ loading: false }) //disable loading
+
+          }
+
         }
-        else{
-          //notify not match 2 price plus
-          errorNoti_not_match();
+        else {
+          //notify faail
+          errorNoti_get_sum('get_err_true');
+          this.setState({ get_sum: false });
           this.setState({ loading: false }) //disable loading
-          
+
         }
 
-      }
-      else {
-        //notify faail
-        errorNoti_get_sum();
-        this.setState({get_sum:false});
+      }).catch(error => {
+        //notify fail
+        errorNoti_get_sum('no_connect');
+        this.setState({ get_sum: false });
         this.setState({ loading: false }) //disable loading
-        
-      }
-
-    }).catch(error=>{
-      //notify fail
-      errorNoti_get_sum();
-      this.setState({get_sum:false});
-      this.setState({ loading: false }) //disable loading
-    });
+      });
   }
 
   componentDidMount() {
@@ -143,12 +158,12 @@ class SubContent extends Component {
       if (!err) {
         if (err) {
           return;
-      }
-      const allvalues = {
+        }
+        const allvalues = {
           ...values,
           'date': values.date.format('YYYY-MM-DD')
-      }
-      this.checkId_getSum(allvalues); //check summation and id then post data
+        }
+        this.checkId_getSum(allvalues); //check summation and id then post data
       }
     });
   }
@@ -187,7 +202,7 @@ class SubContent extends Component {
                   pattern: ''
                 }],
               })(
-                <Input placeholder="เลขที่ครุภัณฑ์"  onChange={this.handleInputChange('id')} /> 
+                <Input placeholder="เลขที่ครุภัณฑ์" onChange={this.handleInputChange('id')} />
               )}
             </FormItem>
             <FormItem
@@ -201,7 +216,7 @@ class SubContent extends Component {
                   message: 'กรุณาเลือกวันเดือนปี!'
                 }]
               })(
-                <DatePicker  style={{ width: 300, margin: '0 auto' }} placeholder="วันเดือนปี" />
+                <DatePicker style={{ width: 300, margin: '0 auto' }} placeholder="วันเดือนปี" />
               )}
             </FormItem>
 
