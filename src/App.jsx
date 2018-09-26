@@ -19,20 +19,20 @@ class App extends Component {
   render() {
     return (
 
-      <LoginPage/>
-      // <BrowserRouter>
-      //   <Layout>
-      //     <Content style={{}}>
-      //       <Route path="/" component={Header} />
-      //       <Route path="/" component={PrisonComponent} />
-      //     </Content>
+      <BrowserRouter>
+        <Layout>
+          <Content style={{}}>
+            <Route path="/" component={Header} />
+            <Route path="/" component={PrisonComponent} />
+            <Route path="/login" component={LoginPage} />
+          </Content>
 
 
-      //     <Footer style={{ textAlign: 'center',bottom:0,left:0,position:'fixed',width:'100%' }}>
-      //       Prison Calculate ©2018 Created by Apotoxin
-      //     </Footer>
-      //   </Layout>
-      // </BrowserRouter>
+          <Footer style={{ textAlign: 'center',bottom:0,left:0,position:'fixed',width:'100%' }}>
+            Prison Calculate ©2018 Created by Apotoxin
+          </Footer>
+        </Layout>
+      </BrowserRouter>
 
     );
   }
