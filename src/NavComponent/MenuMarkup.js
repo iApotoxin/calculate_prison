@@ -14,8 +14,11 @@ const MenuMarkup = ({ mobileVersion, activeLinkKey, onLinkClick, className }) =>
     selectedKeys={[`${activeLinkKey}`]}
     className={className}
   >
-    <Menu.Item key='/'>
-      <Link onClick={onLinkClick} to='/'>Prison Calculate</Link>
+   <Menu.Item key='/Show'>
+      <Link onClick={onLinkClick} to='/Show'>แสดงข้อมูล</Link>
+    </Menu.Item>
+    <Menu.Item key='/Add'>
+      <Link onClick={onLinkClick} to='/Add'>เพิ่มข้อมูล</Link>
     </Menu.Item>
   </Menu>
 );

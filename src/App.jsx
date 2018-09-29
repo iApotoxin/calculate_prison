@@ -2,8 +2,9 @@ import React, { Component } from 'react';
 import './App.css';
 import { Layout} from 'antd';
 import 'antd/dist/antd.css';
-import PrisonComponent from './MainComponent/PrisonComponent'
+import AddComponent from './MainComponent/AddComponent'
 import LoginPage from './MainComponent/LoginComponent'
+import ShowComponent from './MainComponent/ShowComponent'
 import Header from './Header'
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { faStroopwafel } from '@fortawesome/free-solid-svg-icons'
@@ -23,7 +24,8 @@ class App extends Component {
         <Layout>
           <Content style={{}}>
             <Route path="/" component={Header} />
-            <Route path="/" component={PrisonComponent} />
+            <Route path="/Add" component={AddComponent} />
+            <Route path="/Show" component={ShowComponent} />
             <Route path="/login" component={LoginPage} />
           </Content>
 
