@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { Form, Icon, Input, Button,notification, Spin } from 'antd';
+import './login.css';
 const FormItem = Form.Item;
+
 
 const errorNoti = (type) => {
     let desc = '';
@@ -11,7 +13,7 @@ const errorNoti = (type) => {
       desc = 'ไม่สามารถเข้าสู่ระบบได้ โปรดตรวจสอบความถูกต้องของ username และ password!';
     }
     notification.open({
-        message: 'บันทึกไม่สำเร็จ',
+        message: 'ไม่สามารถเข้าสู่ระบบได้',
         description: desc,
         icon: <Icon type="close-circle" style={{ color: '#ff0000' }} />,
         duration: 8,
@@ -79,11 +81,11 @@ class LoginPage extends Component {
     render() {
         const { getFieldDecorator } = this.props.form;
         return (
-            <div style={{height:'100%', width:'100%', backgroundColor:'#F0F1F1'}}>
+            <div style={{ width:'100%', marginBottom:'20vh', backgroundColor:'#F0F1F1'}}>
             <Spin  size="large" tip="กำลังเข้าสู่ระบบ..." spinning={this.state.loading} delay={500}>
-            <div  style={{ width: 300, margin: 'auto' ,paddingTop:200 }}>
+            <div className="loginForm">
                 <Form onSubmit={this.handleSubmit}>
-                <h2>เข้าสู่ระบบ Prison Calculate</h2>
+                <h2 className="loginTitle">เข้าสู่ระบบ Prison Calculate</h2>
                 <br></br>
                     <FormItem>
                         {getFieldDecorator('userName', {

@@ -37,7 +37,7 @@ class AddComponent extends Component {
         if (this.state.viewportWidth > this.props.mobileBreakPoint){
             return(
                 <BrowserRouter>
-                    <Layout style={{ padding: '22px 20px 70px', background: '#fff' ,height:'100vh'}}>
+                    <Layout style={{ padding: '22px 20px 70px', background: '#fff' }}>
                         <Sider>
                         <AddMenu></AddMenu>
                         </Sider>
@@ -64,7 +64,8 @@ class AddComponent extends Component {
 
 const AddContent=()=>{
     return(
-        <Content style={{ padding: '0 24px', minHeight: 280}}>
+        <Content>
+        <Route exact path="/" component={Main} />
         <Route exact path="/Add" component={Main} />
         <Route path="/Add/main" component={Main} />
         <Route path="/Add/sub" component={Sub} />

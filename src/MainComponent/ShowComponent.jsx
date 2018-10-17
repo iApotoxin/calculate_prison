@@ -36,7 +36,7 @@ class ShowComponent extends Component {
         if (this.state.viewportWidth > this.props.mobileBreakPoint){
             return(
                 <BrowserRouter>
-                    <Layout style={{ padding: '22px 20px 70px', background: '#fff' ,height:'100vh'}}>
+                    <Layout style={{ padding: '22px 20px 70px', background: '#fff'}}>
                         <Sider>
                         <ShowMenu></ShowMenu>
                         </Sider>
@@ -63,7 +63,7 @@ class ShowComponent extends Component {
 
 const ShowContent=()=>{
     return(
-        <Content style={{ padding: '0 24px', minHeight: 280}}>
+        <Content style={{ padding: '0 24px'}}>
         <Route exact path="/Show" component={Main} />
         <Route path="/Show/main" component={Main} />
         {/* <Route path="/Show/sub" component={Sub} /> */}
