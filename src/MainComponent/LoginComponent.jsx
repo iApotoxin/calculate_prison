@@ -1,8 +1,12 @@
 import React, { Component } from 'react';
-import { Form, Icon, Input, Button,notification, Spin } from 'antd';
+import { Layout,Form, Icon, Input, Button,notification, Spin } from 'antd';
 import './login.css';
+import Auth from '../shared/auth'
+import {Redirect} from "react-router-dom";
 const FormItem = Form.Item;
 
+
+const {  Footer } = Layout;
 
 const errorNoti = (type) => {
     let desc = '';
@@ -43,7 +47,9 @@ class LoginPage extends Component {
         }
         ).then((response) => response.json())
         .then(response=>{
-        //   console.log("get detail response: ", response);
+          console.log("get detail response: ", response);
+          Auth.setCookies(response.login[0].username)
+
           if (response.error === false) {
             //set data to state
             this.setState({login:true});
@@ -80,7 +86,9 @@ class LoginPage extends Component {
 
     render() {
         const { getFieldDecorator } = this.props.form;
+        if (Auth.checkUsername()) return <Redirect to="/Add"/>;
         return (
+            <Layout>
             <div style={{ width:'100%', marginBottom:'20vh', backgroundColor:'#F0F1F1'}}>
             <Spin  size="large" tip="กำลังเข้าสู่ระบบ..." spinning={this.state.loading} delay={500}>
             <div className="loginForm">
@@ -111,6 +119,10 @@ class LoginPage extends Component {
             </Spin>
                             
             </div>
+            <Footer style={{ textAlign: 'center', bottom: 0, left: 0, width: '100%' }}>
+                        Prison Calculate ©2018 Created by Apotoxin
+             </Footer>
+            </Layout>
         );
     }
 }

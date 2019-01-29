@@ -1,22 +1,19 @@
 import React, { Component } from 'react';
 import './App.css';
-import { Layout } from 'antd';
 import 'antd/dist/antd.css';
 import AddComponent from './MainComponent/AddComponent';
 import LoginPage from './MainComponent/LoginComponent';
 import ShowComponent from './MainComponent/ShowComponent';
-import Header from './Header';
+import PrivateRoute from './route';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { faStroopwafel } from '@fortawesome/free-solid-svg-icons';
 import {
   BrowserRouter,
+  Switch,
   Route,
 } from 'react-router-dom';
 // import {  } from '@okta/okta-react/src/';
 
-
-
-const { Content, Footer } = Layout;
 library.add(faStroopwafel);
 
 // function onAuthRequired({history}){
@@ -34,20 +31,19 @@ class App extends Component {
       // onAuthRequired={onAuthRequired}
       // >
       <BrowserRouter>
-        <Layout>
-          <Header/>
-          <Content style={{}}>
-            <Route exact path="/" component={AddComponent} />
+      <Switch>
+  
+          {/* <Route exact path="/" component={AddComponent} />
             <Route path="/Add" component={AddComponent} />
             <Route path="/Show" component={ShowComponent} />
-            <Route path="/login" component={LoginPage} />
-          </Content>
+            <Route path="/login" component={LoginPage} /> */}
 
+        <Route exact path="/" component={LoginPage}/>
+        <PrivateRoute exact path="/Add" component={AddComponent}/>
+        <PrivateRoute exact path="/Show" component={ShowComponent}/>
+        <Route component={() => <h1>NoMatch</h1>}/>
 
-          <Footer style={{ textAlign: 'center', bottom: 0, left: 0, width: '100%' }}>
-            Prison Calculate ©2018 Created by Apotoxin
-          </Footer>
-        </Layout>
+      </Switch>
       </BrowserRouter>
       // </Security>
     );
